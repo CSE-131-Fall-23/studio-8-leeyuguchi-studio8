@@ -5,13 +5,33 @@ public class SelectAllQuestion extends MultipleChoiceQuestion {
 	public SelectAllQuestion(String prompt, String answer, String[] choices) {
 		//Hint: 1 point per choice
 		//FIXME
+		super(prompt,answer,choices.length,choices);
+
 	}
-	
+
 	public int checkAnswer(String givenAnswer) {
 		//FIXME Should return partial credit (if earned)!
-		return 0;
+		int pointsEarned = getPoints();
+
+		for (int i = 0; i < getAnswer().length(); i++ ) {
+			char c = getAnswer().charAt(i);
+			int x = givenAnswer.indexOf(c);
+			if (x==-1) {
+				pointsEarned--;				
+			}
+		}
+
+		for (int i = 0; i < givenAnswer.length(); i++ ) {
+			char c = givenAnswer.charAt(i);
+			int x = getAnswer().indexOf(c);
+			if (x==-1) {
+				pointsEarned--;				
+			}
+		}
+
+		return pointsEarned;
 	}
-	
+
 	public static void main(String[] args) {
 		String[] choices = {"instance variables", "git", "methods", "eclipse"};
 		Question selectAll = new SelectAllQuestion("Select all of the following that can be found within a class:", "13", choices);
@@ -26,6 +46,6 @@ public class SelectAllQuestion extends MultipleChoiceQuestion {
 		System.out.println(selectAll.checkAnswer("4")); //1 point
 		System.out.println(selectAll.checkAnswer("124")); //1 point
 		System.out.println(selectAll.checkAnswer("24")); //0 points
-		
+
 	}
 }
